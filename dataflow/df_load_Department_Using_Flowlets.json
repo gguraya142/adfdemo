@@ -1,0 +1,73 @@
+{
+	"name": "df_load_Department_Using_Flowlets",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Department_Source",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flowlet1",
+					"flowlet": {
+						"referenceName": "fl_RemoveDuplicate_Transformation",
+						"type": "DataFlowReference"
+					}
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"derivedColumn1 compose(mapColumn(",
+				"          empid = depid,",
+				"          name,",
+				"          country,",
+				"          department",
+				"     ),",
+				"     composition: 'fl_RemoveDuplicate_Transformation') ~> flowlet1@(output1)",
+				"source1 derive(id = depid,",
+				"          name = depname,",
+				"          country = '',",
+				"          department = '') ~> derivedColumn1",
+				"flowlet1@output1 select(mapColumn(",
+				"          Dept_id = empid,",
+				"          department_name = name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}

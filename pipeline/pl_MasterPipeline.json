@@ -1,0 +1,40 @@
+{
+	"name": "pl_MasterPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_SetVariableActivity",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"FileName": {
+							"value": "@pipeline().parameters.MasterPipelineParameter",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"MasterPipelineParameter": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Learn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-09T03:35:39Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

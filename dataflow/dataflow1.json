@@ -1,0 +1,136 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SourceCSV",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SourceCSV",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SinkCSV",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureBlobLinkedService",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Application as string,",
+				"          DateSourceCreated as string,",
+				"          DataSourceUpdated as string,",
+				"          PulledDate as string,",
+				"          CorporationName as string,",
+				"          CorporationCode as string,",
+				"          YardNumber as string,",
+				"          YardName as string,",
+				"          AddressLine1 as string,",
+				"          AddressLine2 as string,",
+				"          AddressCity as string,",
+				"          AddressState as string,",
+				"          AddressZip as string,",
+				"          Phone as string,",
+				"          YardLocation as string,",
+				"          YardActiveFlag as string,",
+				"          CorporationActiveFlag as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          Application as string,",
+				"          DateSourceCreated as string,",
+				"          DataSourceUpdated as string,",
+				"          PulledDate as string,",
+				"          CorporationName as string,",
+				"          CorporationCode as string,",
+				"          YardNumber as string,",
+				"          YardName as string,",
+				"          AddressLine1 as string,",
+				"          AddressLine2 as string,",
+				"          AddressCity as string,",
+				"          AddressState as string,",
+				"          AddressZip as string,",
+				"          Phone as string,",
+				"          YardLocation as string,",
+				"          YardActiveFlag as string,",
+				"          CorporationActiveFlag as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source1, source2 join(source1@Application == source2@Application,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Column_1 as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          Application = source1@Application,",
+				"          DateSourceCreated = source1@DateSourceCreated,",
+				"          DataSourceUpdated = source1@DataSourceUpdated,",
+				"          PulledDate = source1@PulledDate,",
+				"          CorporationName = source1@CorporationName,",
+				"          CorporationCode = source1@CorporationCode,",
+				"          YardNumber = source1@YardNumber,",
+				"          YardName = source1@YardName,",
+				"          AddressLine1 = source1@AddressLine1,",
+				"          AddressLine2 = source1@AddressLine2,",
+				"          AddressCity = source1@AddressCity,",
+				"          AddressState = source1@AddressState,",
+				"          AddressZip = source1@AddressZip,",
+				"          Phone = source1@Phone,",
+				"          YardLocation = source1@YardLocation,",
+				"          YardActiveFlag = source1@YardActiveFlag,",
+				"          CorporationActiveFlag = source1@CorporationActiveFlag,",
+				"          Application = source2@Application,",
+				"          DateSourceCreated = source2@DateSourceCreated,",
+				"          DataSourceUpdated = source2@DataSourceUpdated,",
+				"          PulledDate = source2@PulledDate,",
+				"          CorporationName = source2@CorporationName,",
+				"          CorporationCode = source2@CorporationCode,",
+				"          YardNumber = source2@YardNumber,",
+				"          YardName = source2@YardName,",
+				"          AddressLine1 = source2@AddressLine1,",
+				"          AddressLine2 = source2@AddressLine2,",
+				"          AddressCity = source2@AddressCity,",
+				"          AddressState = source2@AddressState,",
+				"          AddressZip = source2@AddressZip,",
+				"          Phone = source2@Phone,",
+				"          YardLocation = source2@YardLocation,",
+				"          YardActiveFlag = source2@YardActiveFlag,",
+				"          CorporationActiveFlag = source2@CorporationActiveFlag",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

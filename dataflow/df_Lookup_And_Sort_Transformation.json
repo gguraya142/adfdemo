@@ -1,0 +1,112 @@
+{
+	"name": "df_Lookup_And_Sort_Transformation",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Employee3_Source",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Department_Source",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_sinkOutputDynamically",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "window1"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "sort2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source1, source2 lookup(department == depid,",
+				"     multiple: false,",
+				"     pickup: 'first',",
+				"     asc(depid, true),",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 sort(asc(department, true),",
+				"     caseInsensitive: true) ~> sort1",
+				"sort1 select(mapColumn(",
+				"          empid,",
+				"          name,",
+				"          country,",
+				"          depname",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"window1 keyGenerate(output(New_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"sort2 window(over(depname),",
+				"     asc(empid, true),",
+				"     empid2 = count(name)) ~> window1",
+				"select1 cast(output(",
+				"          empid as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sort(asc(empid, true)) ~> sort2",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Column_1 as string",
+				"     ),",
+				"     partitionFileNames:['Lookup.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

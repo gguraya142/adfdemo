@@ -1,0 +1,38 @@
+{
+	"name": "ds_Azure_SQL_Parse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataSets"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "empId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "empName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "skills",
+				"type": "nvarchar"
+			},
+			{
+				"name": "address",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "Demo",
+			"table": "tbl_employees_2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

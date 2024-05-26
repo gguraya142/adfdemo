@@ -1,0 +1,33 @@
+{
+	"name": "ds_par_TblName",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_par_AzureSqlDatabase1",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"par_db": "ahi_dwh",
+				"par_server": "ahidwhsql.database.windows.net"
+			}
+		},
+		"parameters": {
+			"ds_par_tbl": {
+				"type": "string",
+				"defaultValue": "test"
+			}
+		},
+		"folder": {
+			"name": "DataSets"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().ds_par_tbl",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

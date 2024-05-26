@@ -1,0 +1,38 @@
+{
+	"name": "pl_Tumbling",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "vr_End",
+					"value": {
+						"value": "trigger().outputs.windowStartTime",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"vr_Start": {
+				"type": "String"
+			},
+			"vr_End": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Learn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-04-05T02:28:22Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

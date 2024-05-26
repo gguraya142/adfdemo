@@ -1,0 +1,64 @@
+{
+	"name": "df_Parse_Transformation",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_Parse",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DelimitedParse"
+				},
+				{
+					"name": "JSONParse"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empId as integer,",
+				"          empName as string,",
+				"          skills as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT * FROM demo.tbl_employees_2',",
+				"     format: 'query') ~> source1",
+				"source1 parse(skills = skills ? (ParseSkill1 as string,",
+				"          ParseSkill2 as string,",
+				"          ParseSkill3 as string),",
+				"     format: 'delimited',",
+				"     columnNamesAsHeader: false,",
+				"     columnDelimiter: '|',",
+				"     nullValue: '') ~> DelimitedParse",
+				"DelimitedParse parse(address = address ? (city as string,",
+				"          country as string),",
+				"     format: 'json',",
+				"     documentForm: 'singleDocument') ~> JSONParse",
+				"JSONParse sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}

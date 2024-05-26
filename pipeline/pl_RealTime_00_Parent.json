@@ -1,0 +1,66 @@
+{
+	"name": "pl_RealTime_00_Parent",
+	"properties": {
+		"description": "Pipeline Return Value through Child Pipeline",
+		"activities": [
+			{
+				"name": "Child Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_RealTime_00_Child",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Child Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "insert into demo.tbl_log values('@{activity('Child Pipeline').output.pipelineReturnValue.Var_PipelineName}','@{activity('Child Pipeline').output.pipelineReturnValue.Var_RunId}')",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"folder": {
+			"name": "RealTime"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-09T03:36:34Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

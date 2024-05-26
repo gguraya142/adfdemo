@@ -1,0 +1,42 @@
+{
+	"name": "pl_SetVariableActivity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileType",
+					"value": {
+						"value": "@replace(pipeline().parameters.FileName,'Sales','')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "Daily and Hourly"
+			}
+		},
+		"variables": {
+			"FileType": {
+				"type": "String",
+				"defaultValue": "@replace(pipeline().parameters.FileName.'Sales','')"
+			}
+		},
+		"folder": {
+			"name": "Learn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-09T03:35:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

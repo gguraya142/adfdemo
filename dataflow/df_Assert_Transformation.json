@@ -1,0 +1,74 @@
+{
+	"name": "df_Assert_Transformation",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Employee_Source",
+						"type": "DatasetReference"
+					},
+					"name": "Employee"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Department_Source",
+						"type": "DatasetReference"
+					},
+					"name": "Department"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AssertCheckDepartment"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employee",
+				"source(output(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Department",
+				"Employee, Department assert(expectExists(department == depid, false, 'AssertOutput', null, \"Check Departmnet Exist or not\"),",
+				"     expectTrue(isInteger(department), false, 'assert2', null, \"Data Type\"),",
+				"     expectUnique(toInteger(empid), true, 'assert3', null, \"Unique Employee Id\")) ~> AssertCheckDepartment",
+				"AssertCheckDepartment derive(Is_Error = isError(),",
+				"          Has_Error = hasError('department')) ~> derivedColumn1",
+				"derivedColumn1 filter(Is_Error==false()) ~> filter1",
+				"filter1 sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"name": "ds_SouceCSV_Get_Dynamically",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"param_FileName": {
+				"type": "string",
+				"defaultValue": "test.csv"
+			}
+		},
+		"folder": {
+			"name": "DataSets"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().param_FileName",
+					"type": "Expression"
+				},
+				"folderPath": "test/Source",
+				"container": "csv-dump"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

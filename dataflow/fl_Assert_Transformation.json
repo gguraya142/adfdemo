@@ -1,0 +1,56 @@
+{
+	"name": "fl_Assert_Transformation",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "AssertCheckDepartment"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "Employee"
+				},
+				{
+					"name": "Department"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> Employee",
+				"input(output(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     order: 1,",
+				"     allowSchemaDrift: true) ~> Department",
+				"Employee, Department assert(expectExists(department == depid, false, 'AssertOutput', null, \"Check Departmnet Exist or not\"),",
+				"     expectTrue(isInteger(department), false, 'assert2', null, \"Data Type\"),",
+				"     expectUnique(toInteger(empid), true, 'assert3', null, \"Unique Employee Id\")) ~> AssertCheckDepartment",
+				"AssertCheckDepartment derive(Is_Error = isError(),",
+				"          Has_Error = hasError('department')) ~> derivedColumn1",
+				"derivedColumn1 filter(Is_Error==false()) ~> filter1",
+				"filter1 output() ~> output1"
+			]
+		}
+	}
+}

@@ -1,0 +1,96 @@
+{
+	"name": "SourceCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "test/Source",
+				"container": "csv-dump"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Application",
+				"type": "String"
+			},
+			{
+				"name": "DateSourceCreated",
+				"type": "String"
+			},
+			{
+				"name": "DataSourceUpdated",
+				"type": "String"
+			},
+			{
+				"name": "PulledDate",
+				"type": "String"
+			},
+			{
+				"name": "CorporationName",
+				"type": "String"
+			},
+			{
+				"name": "CorporationCode",
+				"type": "String"
+			},
+			{
+				"name": "YardNumber",
+				"type": "String"
+			},
+			{
+				"name": "YardName",
+				"type": "String"
+			},
+			{
+				"name": "AddressLine1",
+				"type": "String"
+			},
+			{
+				"name": "AddressLine2",
+				"type": "String"
+			},
+			{
+				"name": "AddressCity",
+				"type": "String"
+			},
+			{
+				"name": "AddressState",
+				"type": "String"
+			},
+			{
+				"name": "AddressZip",
+				"type": "String"
+			},
+			{
+				"name": "Phone",
+				"type": "String"
+			},
+			{
+				"name": "YardLocation",
+				"type": "String"
+			},
+			{
+				"name": "YardActiveFlag",
+				"type": "String"
+			},
+			{
+				"name": "CorporationActiveFlag",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

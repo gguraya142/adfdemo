@@ -1,0 +1,69 @@
+{
+	"name": "pl_Store_CacheSinkOutput_To_Varible",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_Get_CacheSink_Output",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_Get_CacheSink_Output",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "None",
+					"cacheSinks": {
+						"firstRowOnly": true
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "df_Get_CacheSink_Output",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pl_var_GetMaxSalaryFromCacheSink",
+					"value": {
+						"value": "@string(activity('df_Get_CacheSink_Output').output.runstatus.output.CacheSink.value[0].df_GetMaxSalary)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"pl_var_GetMaxSalaryFromCacheSink": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Learn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-09T03:35:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

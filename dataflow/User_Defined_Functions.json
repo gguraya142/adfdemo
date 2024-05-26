@@ -1,0 +1,14 @@
+{
+	"name": "User_Defined_Functions",
+	"properties": {
+		"type": "UDFLibrary",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"Convert_Gender_Into_Interger(string) as integer = iif(i1=='male',1,iif(i1=='female',0,-1))"
+			]
+		}
+	}
+}

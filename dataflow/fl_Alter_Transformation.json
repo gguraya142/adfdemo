@@ -1,0 +1,40 @@
+{
+	"name": "fl_Alter_Transformation",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "alterRow1"
+				},
+				{
+					"name": "input1"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          id as integer,",
+				"          name as string,",
+				"          gender as string,",
+				"          salary as integer,",
+				"          department as string",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> input1",
+				"input1 alterRow(deleteIf(1==1),",
+				"     upsertIf(1==1),",
+				"     insertIf(1==1/* department=='Payroll' */),",
+				"     updateIf(1==1)) ~> alterRow1",
+				"alterRow1 output() ~> output1"
+			]
+		}
+	}
+}

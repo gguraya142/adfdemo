@@ -1,0 +1,46 @@
+{
+	"name": "pl_FilterActivity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Activity_FilterArray",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [
+					{
+						"name": "Remark",
+						"value": "its return those values of array which are greater than 3 number"
+					}
+				],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.Param_Array",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@greater(item(),3)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Param_Array": {
+				"type": "array",
+				"defaultValue": [
+					1,
+					2,
+					3,
+					4,
+					5
+				]
+			}
+		},
+		"folder": {
+			"name": "Learn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-09T03:35:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
