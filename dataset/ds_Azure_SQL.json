@@ -5,6 +5,11 @@
 			"referenceName": "ls_Nagarrodb",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "DataSets"
 		},
@@ -36,7 +41,10 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "tbl_sales"
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
