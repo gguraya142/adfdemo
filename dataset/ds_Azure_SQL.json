@@ -2,7 +2,7 @@
 	"name": "ds_Azure_SQL",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabaseLinkedService",
+			"referenceName": "ls_Nagarrodb",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -36,7 +36,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Yard_Dim"
+			"table": "tbl_sales"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
