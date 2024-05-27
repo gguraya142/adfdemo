@@ -1,5 +1,13 @@
 {
 	"name": "adfnagarro",
+	"properties": {
+		"globalParameters": {
+			"GlobalParameter": {
+				"type": "string",
+				"value": "dummy"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
