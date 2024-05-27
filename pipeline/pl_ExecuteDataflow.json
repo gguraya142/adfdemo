@@ -21,7 +21,7 @@
 						"datasetParameters": {
 							"source1": {
 								"ds_param_BlobRootFolder": {
-									"value": "@pipeline().globalParameters.Global_Param_BlobRootFolder",
+									"value": "@pipeline().globalParameters.GlobalParameter",
 									"type": "Expression"
 								}
 							}
