@@ -13,8 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "test/Source",
-				"container": "csv-dump"
+				"folderPath": "Source",
+				"container": "adf"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
