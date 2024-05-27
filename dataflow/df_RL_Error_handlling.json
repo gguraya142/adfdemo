@@ -1,0 +1,82 @@
+{
+	"name": "df_RL_Error_handlling",
+	"properties": {
+		"folder": {
+			"name": "DataFlow"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_sales",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          saleDate as string,",
+				"          salesitem as string,",
+				"          country as string,",
+				"          qunatity as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     rowUrlColumn: 'SourceFilePath') ~> source1",
+				"source1 cast(output(",
+				"          saleDate as string '\\'dd-MMM-yyyy\\''",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 split(isNull(toDate(saleDate,'dd-MMM-yyyy')),",
+				"     disjoint: false) ~> split1@(Good, Bad)",
+				"split1@Good sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpId as integer,",
+				"          EmpName as string,",
+				"          Gender as string,",
+				"          Salary as integer,",
+				"          Department as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"split1@Bad sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink2"
+			]
+		}
+	}
+}
