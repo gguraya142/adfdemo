@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "*",
 				"folderPath": "Source",
 				"fileSystem": "adls0container"
 			},
