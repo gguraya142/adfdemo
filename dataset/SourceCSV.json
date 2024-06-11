@@ -2,7 +2,7 @@
 	"name": "SourceCSV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobLinkedService",
+			"referenceName": "ls_New_ADLS",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -12,9 +12,9 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
+				"type": "AzureBlobFSLocation",
 				"folderPath": "Source",
-				"container": "adf"
+				"fileSystem": "adls0container"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
